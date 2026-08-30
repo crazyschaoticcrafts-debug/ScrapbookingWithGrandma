@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grandma's Scrappy Corner – Card Supply Organizer</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #ffffff;
+            --text: #4A4A4A;
+            --text-light: #666666;
+            --text-dark: #333333;
+            --pink: #F7DDE2;
+            --pink-dark: #c97b7b;
+            --yellow: #fcecc1;
+            --yellow-hover: #f9e4a8;
+            --card-bg: #fff7fa;
+            --card-border: #f7dde2;
+            --section-border: #fcecc1;
+            --shadow: 0 4px 10px rgba(0,0,0,0.08);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
+            --radius: 14px;
+            --radius-sm: 10px;
+            --radius-xs: 12px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .site-header {
+            text-align: center;
+            padding: 40px 20px 30px;
+        }
+        .site-title {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+        .site-subtitle {
+            font-size: 20px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        /* ===== NAV ===== */
+        .desktop-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        .nav-btn {
+            display: inline-block;
+            background: var(--yellow);
+            color: var(--text);
+            font-weight: bold;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: Arial, sans-serif;
+        }
+        .nav-btn:hover { background: var(--yellow-hover); }
+
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            background: var(--yellow);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 22px;
+            color: var(--text);
+        }
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 24px;
+        }
+        .mobile-overlay.open { display: flex; }
+        .mobile-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--yellow);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text);
+        }
+        .mobile-nav-link {
+            display: block;
+            background: var(--yellow);
+            color: var(--text);
+            font-weight: bold;
+            font-size: 18px;
+            padding: 12px 32px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            text-align: center;
+            min-width: 220px;
+            transition: background 0.2s;
+        }
+        .mobile-nav-link:hover { background: var(--yellow-hover); }
+
+        @media (max-width: 767px) {
+            .desktop-nav { display: none; }
+            .mobile-menu-btn { display: inline-block; }
+            .site-title { font-size: 30px; }
+            .site-subtitle { font-size: 16px; }
+        }
+
+        /* ===== MAIN ===== */
+        .main-content {
+            flex: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 20px 40px;
+        }
+
+        /* ===== INTRO BOX ===== */
+        .intro-box {
+            background: var(--bg);
+            border: 1px solid var(--section-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px 28px;
+            margin-bottom: 32px;
+        }
+        .intro-text {
+            font-size: 15px;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+        .overall-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .overall-label {
+            font-size: 14px;
+            color: var(--text);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .progress-track {
+            background: var(--pink);
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+            flex: 1;
+            min-width: 100px;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: var(--pink-dark);
+            transition: width 0.4s ease;
+        }
+        .reset-all-btn {
+            background: var(--yellow);
+            color: var(--text);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 8px 18px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            font-family: Arial, sans-serif;
+            transition: background 0.2s;
+        }
+        .reset-all-btn:hover { background: var(--yellow-hover); }
+
+        /* ===== SECTION GRID ===== */
+        .sections-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 767px) {
+            .sections-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ===== SECTION BOX ===== */
+        .section-box {
+            background: var(--bg);
+            border: 1px solid var(--section-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .section-header {
+            background: var(--pink);
+            border: 1px solid var(--section-border);
+            border-radius: var(--radius-sm);
+            margin: 14px 14px 0;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+        .check-all-btn {
+            background: var(--yellow);
+            color: var(--text);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 6px 14px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            font-family: Arial, sans-serif;
+            transition: background 0.2s;
+        }
+        .check-all-btn:hover { background: var(--yellow-hover); }
+
+        .section-body { padding: 14px; }
+
+        .section-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .section-count {
+            font-size: 13px;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+        .section-progress-track {
+            background: var(--pink);
+            border-radius: 999px;
+            height: 8px;
+            overflow: hidden;
+            flex: 1;
+            max-width: 140px;
+        }
+        .section-progress-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: var(--pink-dark);
+            transition: width 0.4s ease;
+        }
+
+        /* ===== SUPPLY ITEMS ===== */
+        .supply-list { display: flex; flex-direction: column; gap: 6px; }
+
+        .supply-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--yellow);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .supply-item:hover { background: var(--yellow-hover); }
+        .supply-item.checked {
+            background: var(--yellow-hover);
+        }
+        .supply-item.checked .item-label {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .supply-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            background: white;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .supply-checkbox:checked {
+            background: var(--pink-dark);
+            border-color: var(--pink-dark);
+        }
+        .supply-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .item-label { font-size: 14px; color: var(--text); }
+
+        /* ===== NOTES ===== */
+        .notes-toggle-btn {
+            background: none;
+            border: none;
+            color: var(--pink-dark);
+            cursor: pointer;
+            font-size: 13px;
+            padding: 6px 0;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .notes-toggle-btn:hover { color: #a85d5d; }
+
+        .notes-wrap { margin-top: 8px; }
+        .notes-wrap.hidden { display: none; }
+
+        .notes-area {
+            width: 100%;
+            min-height: 60px;
+            border: 1px solid var(--section-border);
+            border-radius: var(--radius-sm);
+            background: var(--card-bg);
+            padding: 10px 14px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: var(--text);
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .notes-area:focus {
+            border-color: var(--pink-dark);
+            box-shadow: 0 0 0 3px rgba(201, 123, 123, 0.15);
+        }
+
+        /* ===== STICKY BUTTONS ===== */
+        .sticky-btn-group {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 50;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .action-btn {
+            background: var(--yellow);
+            color: var(--text);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 12px 22px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: Arial, sans-serif;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .action-btn:hover {
+            background: var(--yellow-hover);
+            transform: translateY(-2px);
+        }
+        .action-btn.download { background: #f0e2a0; }
+        .action-btn.download:hover { background: #e8d68e; }
+
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 80px;
+            right: 28px;
+            z-index: 40;
+            background: var(--yellow);
+            color: var(--text);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            text-decoration: none;
+            font-size: 18px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .back-to-top.visible { opacity: 1; pointer-events: auto; }
+
+        /* ===== FOOTER ===== */
+        .site-footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: auto;
+        }
+        .site-footer a {
+            color: var(--pink-dark);
+            text-decoration: none;
+        }
+        .site-footer a:hover { text-decoration: underline; }
+
+        /* ===== PRINT ===== */
+        @media print {
+            @page { size: 8.5in 11in; margin: 0.5in; }
+            body { background: white !important; font-size: 11pt; }
+            .no-print { display: none !important; }
+            .sticky-btn-group, .back-to-top, .mobile-menu-btn, .mobile-overlay, .desktop-nav, .check-all-btn, .notes-toggle-btn, .reset-all-btn { display: none !important; }
+            .section-box {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 12pt;
+            }
+            .notes-wrap { display: block !important; }
+            .notes-area { border: 1px solid #ccc; }
+            .progress-track, .progress-fill, .section-progress-track, .section-progress-fill {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+            .supply-checkbox {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+            .supply-checkbox:checked {
+                background: var(--pink-dark) !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+            .supply-item { background: #f9f3e0 !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+            .site-footer { border-top: 1px solid #ddd; padding-top: 10pt; }
+        }
+    </style>
+</head>
+<body data-id="0">
+    <app-icon data-id="1" hidden data-icon="scissors" data-palette="Earth"></app-icon>
+
+    <!-- ===== HEADER ===== -->
+    <header data-id="2" class="site-header">
+        <div data-id="3" style="max-width: 900px; margin: 0 auto;">
+            <!-- Mobile menu button -->
+            <div data-id="4" style="display: flex; justify-content: space-between; align-items: center;" class="mobile-header-row">
+                <button data-id="5" class="mobile-menu-btn no-print" id="mobile-menu-btn-gc01" aria-label="Open menu">☰</button>
+            </div>
+
+            <!-- Desktop Nav -->
+            <nav data-id="6" class="desktop-nav no-print" aria-label="Main navigation">
+                <a data-id="7" href="#" class="nav-btn">Home</a>
+                <a data-id="8" href="#supplies" class="nav-btn">Supply Organizer</a>
+                <a data-id="9" href="#" class="nav-btn">Tips &amp; Tricks</a>
+                <a data-id="10" href="#" class="nav-btn">Gallery</a>
+            </nav>
+
+            <!-- Mobile Nav Overlay -->
+            <nav data-id="11" id="mobile-menu-gc01" class="mobile-overlay" aria-label="Mobile navigation">
+                <button data-id="12" id="mobile-menu-close-gc01" class="mobile-close-btn" aria-label="Close menu">✕</button>
+                <a data-id="13" href="#" class="mobile-nav-link">Home</a>
+                <a data-id="14" href="#supplies" class="mobile-nav-link">Supply Organizer</a>
+                <a data-id="15" href="#" class="mobile-nav-link">Tips &amp; Tricks</a>
+                <a data-id="16" href="#" class="mobile-nav-link">Gallery</a>
+            </nav>
+
+            <h1 data-id="17" class="site-title">Grandma's Scrappy Corner</h1>
+            <p data-id="18" class="site-subtitle">Card Supply Organizer · Printables · Scrapbook Magic</p>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main data-id="19" class="main-content" id="supplies">
+
+        <!-- Intro Box -->
+        <section data-id="20" class="intro-box" id="intro-box-gc01">
+            <p data-id="21" class="intro-text">
+                Welcome to your cozy card supply checklist! Use this page to keep track of everything you need for your card-making projects. Check off what you have, note what's running low, and never miss a must-have supply again. 🌸
+            </p>
+            <div data-id="22" class="overall-row">
+                <span data-id="23" class="overall-label" id="total-progress-gc01"></span>
+                <div data-id="24" class="progress-track">
+                    <div data-id="25" class="progress-fill" id="total-progress-bar-gc01" style="width: 0%;"></div>
+                </div>
+                <button data-id="26" class="reset-all-btn no-print" id="reset-all-gc01">↺ Reset All</button>
+            </div>
+        </section>
+
+        <!-- Supply Sections Grid -->
+        <div data-id="27" class="sections-grid" id="sections-container-gc01">
+
+            <!-- SECTION 1: Cardstock -->
+            <article data-id="28" class="section-box supply-section" data-section="cardstock">
+                <div data-id="29" class="section-header">
+                    <span data-id="30" class="section-title">📄 Cardstock &amp; Card Bases</span>
+                    <button data-id="31" class="check-all-btn no-print" data-section="cardstock">Check All</button>
+                </div>
+                <div data-id="32" class="section-body">
+                    <div data-id="33" class="section-meta">
+                        <span data-id="34" class="section-count"></span>
+                        <div data-id="35" class="section-progress-track"><div data-id="36" class="section-progress-fill" style="width:0%"></div></div>
+                    </div>
+                    <div data-id="37" class="supply-list">
+                        <label data-id="38" class="supply-item"><input data-id="39" type="checkbox" class="supply-checkbox" aria-label="White cardstock (80lb)" /><span data-id="40" class="item-label">White cardstock (80lb)</span></label>
+                        <label data-id="41" class="supply-item"><input data-id="42" type="checkbox" class="supply-checkbox" aria-label="Cream cardstock" /><span data-id="43" class="item-label">Cream cardstock</span></label>
+                        <label data-id="44" class="supply-item"><input data-id="45" type="checkbox" class="supply-checkbox" aria-label="Black cardstock" /><span data-id="46" class="item-label">Black cardstock</span></label>
+                        <label data-id="47" class="supply-item"><input data-id="48" type="checkbox" class="supply-checkbox" aria-label="Kraft cardstock (brown)" /><span data-id="49" class="item-label">Kraft cardstock (brown)</span></label>
+                        <label data-id="50" class="supply-item"><input data-id="51" type="checkbox" class="supply-checkbox" aria-label="Colored cardstock assortment (pastels)" /><span data-id="52" class="item-label">Colored cardstock assortment (pastels)</span></label>
+                        <label data-id="53" class="supply-item"><input data-id="54" type="checkbox" class="supply-checkbox" aria-label="Colored cardstock assortment (bold)" /><span data-id="55" class="item-label">Colored cardstock assortment (bold)</span></label>
+                        <label data-id="56" class="supply-item"><input data-id="57" type="checkbox" class="supply-checkbox" aria-label="Pre-scored card bases (A2 size)" /><span data-id="58" class="item-label">Pre-scored card bases (A2 size)</span></label>
+                        <label data-id="59" class="supply-item"><input data-id="60" type="checkbox" class="supply-checkbox" aria-label="Pre-scored card bases (square)" /><span data-id="61" class="item-label">Pre-scored card bases (square)</span></label>
+                        <label data-id="62" class="supply-item"><input data-id="63" type="checkbox" class="supply-checkbox" aria-label="Pre-scored card bases (slim/slimline)" /><span data-id="64" class="item-label">Pre-scored card bases (slim/slimline)</span></label>
+                        <label data-id="65" class="supply-item"><input data-id="66" type="checkbox" class="supply-checkbox" aria-label="Envelopes (A2 white)" /><span data-id="67" class="item-label">Envelopes (A2 white)</span></label>
+                        <label data-id="68" class="supply-item"><input data-id="69" type="checkbox" class="supply-checkbox" aria-label="Envelopes (A2 kraft)" /><span data-id="70" class="item-label">Envelopes (A2 kraft)</span></label>
+                        <label data-id="71" class="supply-item"><input data-id="72" type="checkbox" class="supply-checkbox" aria-label="Envelopes (colored/patterned)" /><span data-id="73" class="item-label">Envelopes (colored/patterned)</span></label>
+                    </div>
+                    <div data-id="74" style="margin-top: 10px;">
+                        <button data-id="75" class="notes-toggle-btn no-print" data-section="cardstock">📝 Add Notes</button>
+                        <div data-id="76" class="notes-wrap hidden" data-notes="cardstock">
+                            <textarea data-id="77" class="notes-area" placeholder="Jot down notes about your cardstock supplies..." aria-label="Notes for Cardstock section"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- SECTION 2: Patterned Paper -->
+            <article data-id="78" class="section-box supply-section" data-section="patterned">
+                <div data-id="79" class="section-header">
+                    <span data-id="80" class="section-title">🌸 Patterned &amp; Specialty Paper</span>
+                    <button data-id="81" class="check-all-btn no-print" data-section="patterned">Check All</button>
+                </div>
+                <div data-id="82" class="section-body">
+                    <div data-id="83" class="section-meta">
+                        <span data-id="84" class="section-count"></span>
+                        <div data-id="85" class="section-progress-track"><div data-id="86" class="section-progress-fill" style="width:0%"></div></div>
+                    </div>
+                    <div data-id="87" class="supply-list">
+                        <label data-id="88" class="supply-item"><input data-id="89" type="checkbox" class="supply-checkbox" aria-label="Patterned paper pad (6x6)" /><span data-id="90" class="item-label">Patterned paper pad (6×6)</span></label>
+                        <label data-id="91" class="supply-item"><input data-id="92" type="checkbox" class="supply-checkbox" aria-label="Patterned paper pad (12x12)" /><span data-id="93" class="item-label">Patterned paper pad (12×12)</span></label>
+                        <label data-id="94" class="supply-item"><input data-id="95" type="checkbox" class="supply-checkbox" aria-label="Vellum sheets" /><span data-id="96" class="item-label">Vellum sheets</span></label>
+                        <label data-id="97" class="supply-item"><input data-id="98" type="checkbox" class="supply-checkbox" aria-label="Acetate/transparency sheets" /><span data-id="99" class="item-label">Acetate/transparency sheets</span></label>
+                        <label data-id="100" class="supply-item"><input data-id="101" type="checkbox" class="supply-checkbox" aria-label="Kraft paper sheets" /><span data-id="102" class="item-label">Kraft paper sheets</span></label>
+                        <label data-id="103" class="supply-item"><input data-id="104" type="checkbox" class="supply-checkbox" aria-label="Watercolor paper" /><span data-id="105" class="item-label">Watercolor paper</span></label>
+                        <label data-id="106" class="supply-item"><input data-id="107" type="checkbox" class="supply-checkbox" aria-label="Glitter cardstock" /><span data-id="108" class="item-label">Glitter cardstock</span></label>
+                        <label data-id="109" class="supply-item"><input data-id="110" type="checkbox" class="supply-checkbox" aria-label="Foil paper (gold)" /><span data-id="111" class="item-label">Foil paper (gold)</span></label>
+                        <label data-id="112" class="supply-item"><input data-id="113" type="checkbox" class="supply-checkbox" aria-label="Foil paper (silver)" /><span data-id="114" class="item-label">Foil paper (silver)</span></label>
+                        <label data-id="115" class="supply-item"><input data-id="116" type="checkbox" class="supply-checkbox" aria-label="Tissue paper (for layering)" /><span data-id="117" class="item-label">Tissue paper (for layering)</span></label>
+                        <label data-id="118" class="supply-item"><input data-id="119" type="checkbox" class="supply-checkbox" aria-label="Cork paper" /><span data-id="120" class="item-label">Cork paper</span></label>
+                        <label data-id="121" class="supply-item"><input data-id="122" type="checkbox" class="supply-checkbox" aria-label="Wood grain paper" /><span data-id="123" class="item-label">Wood grain paper</span></label>
+                    </div>
+                    <div data-id="124" style="margin-top: 10px;">
+                        <button data-id="125" class="notes-toggle-btn no-print" data-section="patterned">📝 Add Notes</button>
+                        <div data-id="126" class="notes-wrap hidden" data-notes="patterned">
+                            <textarea data-id="127" class="notes-area" placeholder="Notes about your patterned paper..." aria-label="Notes for Patterned Paper section"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- SECTION 3: Stamps -->
+            <article data-id="128" class="section-box supply-section" data-section="stamps">
+                <div data-id="129" class="section-header">
+                    <span data-id="130" class="section-title">🖊️ Stamps</span>
+                    <button data-id="131" class="check-all-btn no-print" data-section="stamps">Check All</button>
+                </div>
+                <div data-id="132" class="section-body">
+                    <div data-id="133" class="section-meta">
+                        <span data-id="134" class="section-count"></span>
+                        <div data-id="135" class="section-progress-track"><div data-id="136" class="section-progress-fill" style="width:0%"></div></div>
+                    </div>
+                    <div data-id="137" class="supply-list">
+                        <label data-id="138" class="supply-item"><input data-id="139" type="checkbox" class="supply-checkbox" aria-label="Clear stamps (floral)" /><span data-id="140" class="item-label">Clear stamps (floral)</span></label>
+                        <label data-id="141" class="supply-item"><input data-id="142" type="checkbox" class="supply-checkbox" aria-label="Clear stamps (sentiments/words)" /><span data-id="143" class="item-label">Clear stamps (sentiments/words)</span></label>
+                        <label data-id="144" class="supply-item"><input data-id="145" type="checkbox" class="supply-checkbox" aria-label="Clear stamps (geometric/background)" /><span data-id="146" class="item-label">Clear stamps (geometric/background)</span></label>
+                        <label data-id="147" class="supply-item"><input data-id="148" type="checkbox" class="supply-checkbox" aria-label="Cling stamps (detailed images)" /><span data-id="149" class="item-label">Cling stamps (detailed images)</span></label>
+                        <label data-id="150" class="supply-item"><input data-id="151" type="checkbox" class="supply-checkbox" aria-label="Foam stamps (large background)" /><span data-id="152" class="item-label">Foam stamps (large background)</span></label>
+                        <label data-id="153" class="supply-item"><input data-id="154" type="checkbox" class="supply-checkbox" aria-label="Alphabet/number stamp set" /><span data-id="155" class="item-label">Alphabet/number stamp set</span></label>
+                        <label data-id="156" class="supply-item"><input data-id="157" type="checkbox" class="supply-checkbox" aria-label="Holiday stamp set" /><span data-id="158" class="item-label">Holiday stamp set</span></label>
+                        <label data-id="159" class="supply-item"><input data-id="160" type="checkbox" class="supply-checkbox" aria-label="Birthday stamp set" /><span data-id="161" class="item-label">Birthday stamp set</span></label>
+                        <label data-id="162" class="supply-item"><input data-id="163" type="checkbox" class="supply-checkbox" aria-label="Thank you stamp set" /><span data-id="164" class="item-label">Thank you stamp set</span></label>
+                        <label data-id="165" class="supply-item"><input data-id="166" type="checkbox" class="supply-checkbox" aria-label="Multi-layered stamp set" /><span data-id="167" class="item-label">Multi-layered stamp set</span></label>
+                    </div>
+                    <div data-id="168" style="margin-top: 10px;">
+                        <button data-id="169" class="notes-toggle-btn no-print" data-section="stamps">📝 Add Notes</button>
+                        <div data-id="170" class="notes-wrap hidden" data-notes="stamps">
+                            <textarea data-id="171" class="notes-area" placeholder="Notes about your stamps..." aria-label="Notes for Stamps section"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- SECTION 4: Dies & Cutting -->
+            <article data-id="172" class="section-box supply-section" data-section="dies">
+                <div data-id="173" class="section-header">
+                    <span data-id="174" class="section-title">🔪 Dies &amp; Cutting Tools</span>
+                    <button data-id="175" class="check-all-btn no-print" data-section="dies">Check All</button>
+                </div>
+                <div data-id="176" class="section-body">
+                    <div data-id="177" class="section-meta">
+                        <span data-id="178" class="section-count"></span>
+                        <div data-id="179" class="section-progress-track"><div data-id="180" class="section-progress-fill" style="width:0%"></div></div>
+                    </div>
+                    <div data-id="181" class="supply-list">
+                        <label data-id="182" class="supply-item"><input data-id="183" type="checkbox" class="supply-checkbox" aria-label="Wafer-thin dies (frames)" /><span data-id="184" class="item-label">Wafer-thin dies (frames)</span></label>
+                        <label data-id="185" class="supply-item"><input data-id="186" type="checkbox" class="supply-checkbox" aria-label="Wafer-thin dies (floral)" /><span data-id="187" class="item-label">Wafer-thin dies (floral)</span></label>
+                        <label data-id="188" class="supply-item"><input data-id="189" type="checkbox" class="supply-checkbox" aria-label="Wafer-thin dies (stitched rectangles)" /><span data-id="190" class="item-label">Wafer-thin dies (stitched rectangles)</span></label>
+                        <label data-id="191" class="supply-item"><input data-id="192" type="checkbox" class="supply-checkbox" aria-label="Wafer-thin dies (circles)" /><span data-id="193" class="item-label">Wafer-thin dies (circles)</span></label>
+                        <label data-id="194" class="supply-item"><input data-id="195" type="checkbox" class="supply-checkbox" aria-label="Wafer-thin dies (words/sentiments)" /><span data-id="196" class="item-label">Wafer-thin dies (words/sentiments)</span></label>
+                        <label data-id="197" class="supply-item"><input data-id="198" type="checkbox" class="supply-checkbox" aria-label="Die cutting machine" /><span data-id="199" class="item-label">Die cutting machine</span></label>
+                        <label data-id="200" class="supply-item"><input data-id="201" type="checkbox" class="supply-checkbox" aria-label="Standard cutting plates" /><span data-id="202" class="item-label">Standard cutting plates</span></label>
+                        <label data-id="203" class="supply-item"><input data-id="204" type="checkbox" class="supply-checkbox" aria-label="Manual die cut board" /><span data-id="205" class="item-label">Manual die cut board</span></label>
+                        <label data-id="206" class="supply-item"><input data-id="207" type="checkbox" class="supply-checkbox" aria-label="Paper trimmer" /><span data-id="208" class="item-label">Paper trimmer</span></label>
+                        <label data-id="209" class="supply-item"><input data-id="210" type="checkbox" class="supply-checkbox" aria-label="Scoring board & bone folder" /><span data-id="211" class="item-label">Scoring board &amp; bone folder</span></label>
+                        <label data-id="212" class="supply-item"><input data-id="213" type="checkbox" class="supply-checkbox" aria-label="Circle punch" /><span data-id="214" class="item-label">Circle punch</span></label>
+                        <label data-id="215" class="supply-item"><input data-id="216" type="checkbox" class="supply-checkbox" aria-label="Corner rounder punch" /><span data-id="217" class="item-label">Corner rounder punch</span></label>
+                        <label data-id="218" class="supply-item"><input data-id="219" type="checkbox" class="supply-checkbox" aria-label="Hole punch" /><span data-id="220" class="item-label">Hole punch</span></label>
+                    </div>
+                    <div data-id="221" style="margin-top: 10px;">
+                        <button data-id="222" class="notes-toggle-btn no-print" data-section="dies">📝 Add Notes</button>
+                        <div data-id="223" class="notes-wrap hidden" data-notes="dies">
+                            <textarea data-id="224" class="notes-area" placeholder="Notes about your dies & cutting tools..." aria-label="Notes for Dies section"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- SECTION 5: Inks & Coloring -->
+            <article data-id="225" class="section-box supply-section" data-section="inks">
+                <div data-id="226" class="section-header">
+                    <span data-id="227" class="section-title">🎨 Inks &amp; Coloring</span>
+                    <button data-id="228" class="check-all-btn no-print" data-section="inks">Check All</button>
+                </div>
+                <div data-id="229" class="section-body">
+                    <div data-id="230" class="section-meta">
+                        <span data-id="231" class="section-count"></span>
+                        <div data-id="232" class="section-progress-track"><div data-id="233" class="section-progress-fill" style="width:0%"></div></div>
+                    </div>
+                    <div data-id="234" class="supply-list">
+                        <label data-id="235" class="supply-item"><input data-id="236" type="checkbox" class="supply-checkbox" aria-label="Dye ink pads (black)" /><span data-id="237" class="item-label">Dye ink pads (black – Versafine or Ranger)</span></label>
+                        <label data-id="238" class="supply-item"><input data-id="239" type="checkbox" class="supply-checkbox" aria-label="Dye ink pads (assorted colors)" /><span data-id="240" class="item-label">Dye ink pads (assorted colors)</span></label>
+                        <label data-id="241" class="supply-item"><input data-id="242" type="checkbox" class="supply-checkbox" aria-label="Pigment ink pad (white)" /><span data-id="243" class="item-label">Pigment ink pad (white)</span></label>
+                        <label data-id="244" class="supply-item"><input data-id="245" type="checkbox" class="supply-checkbox" aria-label="Distress inks (set)" /><span data-id="246" class="item-label">Distress inks (set)</span></label>
+                        <label data-id="247" class="supply-item"><input data-id="248" type="checkbox" class="supply-checkbox" aria-label="Hybrid ink pad" /><span data-id="249" class="item-label">Hybrid ink pad</span></label>
+                        <label data-id="250" class="supply-item"><input data-id="251" type="checkbox" class="supply-checkbox" aria-label="Watercolor paints" /><span data-id="252" class="item-label">Watercolor paints</span></label>
+                        <label data-id="253" class="supply-item"><input data-id="254" type="checkbox" class="supply-checkbox" aria-label="Copic markers (skin tones)" /><span data-id="255" class="item-label">Copic markers (skin tones)</span></label>
+                        <label data-id="256" class="supply-item"><input data-id="257" type="checkbox" class="supply-checkbox" aria-label="Copic markers (assorted)" /><span data-id="258" class="item-label">Copic markers (assorted)</span></label>
+                        <label data-id="259" class="supply-item"><input data-id="260" type="checkbox" class="supply-checkbox" aria-label="Alcohol markers" /><span data-id="261" class="item-label">Alcohol markers</span></label>
+                        <label data-id="262" class="supply-item"><input data-id="263" type="checkbox" class="supply-checkbox" aria-label="Colored pencils" /><span data-id="264" class="item-label">Colored pencils</span></label>
+                        <label data-id="265" class="supply-item"><input data-id="266" type="checkbox" class="supply-checkbox" aria-label="Gel pens (white)" /><span data-id="267" class="item-label">Gel pens (white)</span></label>
+                        <label data-id="268" class="supply-item"><input data-id="269" type="checkbox" class="supply-checkbox" aria-label="Gel pens (glitter)" /><span data-id="270" class="item-label">Gel pens (glitter)</span></label>
+                        <label data-id="271" class="supply-item"><input data-id="272" type="checkbox" class="supply-checkbox" aria-label="Embossing powder (clear)" /><span data-id="273" class="item-label">Embossing powder (clear)</span></label>
+                        <label data-id="274" class="supply-item"><input data-id="275" type="checkbox" class="supply-checkbox" aria-label="Embossing powder (gold)" /><span data-id="276" class="item-label">Embossing powder (gold)</span></label>
+                        <label data-id="277" class="supply-item"><input data-id="278" type="checkbox" class="supply-checkbox" aria-label="Embossing powder (white)" /><span data-id="279" class="item-label">Embossing powder (white)</span></label>
+                        <label data-id="280" class="supply-item"><input data-id="281" type="checkbox" class="supply-checkbox" aria-label="Heat gun" /><span data-id="282" class="item-label">Heat gun</span></label>
+                    </div>
+                    <div data-id="283" style="margin-top: 10px;">
+                        <button data-id="284" class="notes-toggle-btn no-print" data-section="inks">📝 Add Notes</button>
+                        <div data-id="285" class="notes-wrap hidden" data-notes="inks">
+                            <textarea data-id="286" class="notes-area" placeholder="Notes about your inks & coloring supplies..." aria-label="Notes for Inks section"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- SECTION 6: Embellishments -->
+            <article data-id="287" class="section-box supply-section" data-section="embellishments">
+                <div data-id="288" class="section-header">
+                    <span data-id="289" class="section-title">✨ Embellishments</span>
+                    <button data-id="290" class="check-all-btn no-print" data-section="embellishments">Check All</button>
+                </div>
+                <div data-id="291" class="section-body">
+                    <div data-id="292" class="section-meta">
+                        <span data-id="293" class="section-count"></span>
+                        <div data-id="294" class="section-progress-track"><div data-id="295" class="section-progress-fill" style="width:0%"></div></div>
+                    </div>
+                    <div data-id="296" class="supply-list">
+                        <label data-id="297" class="supply-item"><input data-id="298" type="checkbox" class="supply-checkbox" aria-label="Sequins (various colors)" /><span data-id="299" class="item-label">Sequins (various colors)</span></label>
+                        <label data-id="300" class="supply-item"><input data-id="301" type="checkbox" class="supply-checkbox" aria-label="Rhinestones/gems" /><span data-id="302" class="item-label">Rhinestones/gems</span></label>
+                        <label data-id="303" class="supply-item"><input data-id="304" type="checkbox" class="supply-checkbox" aria-label="Enamel dots" /><span data-id="305" class="item-label">Enamel dots</span></label>
+                        <label data-id="306" class="supply-item"><input data-id="307" type="checkbox" class="supply-checkbox" aria-label="Brads (round)" /><span data-id="308" class="item-label">Brads (round)</span></label>
+                        <label data-id="309" class="supply-item"><input data-id="310" type="checkbox" class="supply-checkbox" aria-label="Brads (decorative)" /><span data-id="311" class="item-label">Brads (decorative)</span></label>
+                        <label data-id="312" class="supply-item"><input data-id="313" type="checkbox" class="supply-checkbox" aria-label="Washi tape (assorted)" /><span data-id="314" class="item-label">Washi tape (assorted)</span></label>
+                        <label data-id="315" class="supply-item"><input data-id="316" type="checkbox" class="supply-checkbox" aria-label="Twine/jute cord" /><span data-id="317" class="item-label">Twine/jute cord</span></label>
+                        <label data-id="318" class="supply-item"><input data-id="319" type="checkbox" class="supply-checkbox" aria-label="Ribbon (satin)" /><span data-id="320" class="item-label">Ribbon (satin)</span></label>
+                        <label data-id="321" class="supply-item"><input data-id="322" type="checkbox" class="supply-checkbox" aria-label="Ribbon (grosgrain)" /><span data-id="323" class="item-label">Ribbon (grosgrain)</span></label>
+                        <label data-id="324" class="supply-item"><input data-id="325" type="checkbox" class="supply-checkbox" aria-label="Buttons" /><span data-id="326" class="item-label">Buttons</span></label>
+                        <label data-id="327" class="supply-item"><input data-id="328" type="checkbox" class="supply-checkbox" aria-label="Chipboard stickers" /><span data-id="329" class="item-label">Chipboard stickers</span></label>
+                        <label data-id="330" class="supply-item"><input data-id="331" type="checkbox" class="supply-checkbox" aria-label="Puffy stickers" /><span data-id="332" class="item-label">Puffy stickers</span></label>
+                        <label data-id="333" class="supply-item"><input data-id="334" type="checkbox" class="supply-checkbox" aria-label="Flair buttons" /><span data-id="335" class="item-label">Flair buttons</span></label>
+                        <label data-id="336" class="supply-item"><input data-id="337" type="checkbox" class="supply-checkbox" aria-label="Die cut shapes (pre-made)" /><span data-id="338" class="item-label">Die cut shapes (pre-made)</span></label>
+                        <label data-id="339" class="supply-item"><input data-id="340" type="checkbox" class="supply-checkbox" aria-label="Foam flowers" /><span data-id="341" class="item-label">Foam flowers</span></label>
+                        <label data-id="342" class="supply-item"><input data-id="343" type="checkbox" class="supply-checkbox" aria-label="Paper flowers" /><span data-id="344" class="item-label">Paper flowers</span></label>
+                    </div>
+                    <div data-id="345" style="margin-top: 10px;">
+                        <button data-id="346" class="notes-toggle-btn no-print" data-section="embellishments">📝 Add Notes</button>
+                        <div data-id="347" class="notes-wrap hidden" data-notes="embellishments">
+                            <textarea data-id="348" class="notes-area" placeholder="Notes about your embellishments..." aria-label="Notes for Embellishments section"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- SECTION 7: Adhesives & Tools -->
+            <article data-id="349" class="section-box supply-section" data-section="adhesives">
+                <div data-id="350" class="section-header">
+                    <span data-id="351" class="section-title">🧰 Adhesives &amp; Tools</span>
+                    <button data-id="352" class="check-all-btn no-print" data-section="adhesives">Check All</button>
+                </div>
+                <div data-id="353" class="section-body">
+                    <div data-id="354" class="section-meta">
+                        <span data-id="355" class="section-count"></span>
+                        <div data-id="356" class="section-progress-track"><div data-id="357" class="section-progress-fill" style="width:0%"></div></div>
+                    </div>
+                    <div data-id="358" class="supply-list">
+                        <label data-id="359" class="supply-item"><input data-id="360" type="checkbox" class="supply-checkbox" aria-label="Liquid glue (Tombow Mono)" /><span data-id="361" class="item-label">Liquid glue (Tombow Mono)</span></label>
+                        <label data-id="362" class="supply-item"><input data-id="363" type="checkbox" class="supply-checkbox" aria-label="Tape runner (permanent)" /><span data-id="364" class="item-label">Tape runner (permanent)</span></label>
+                        <label data-id="365" class="supply-item"><input data-id="366" type="checkbox" class="supply-checkbox" aria-label="Foam tape/foam squares" /><span data-id="367" class="item-label">Foam tape/foam squares</span></label>
+                        <label data-id="368" class="supply-item"><input data-id="369" type="checkbox" class="supply-checkbox" aria-label="Double-sided tape" /><span data-id="370" class="item-label">Double-sided tape</span></label>
+                        <label data-id="371" class="supply-item"><input data-id="372" type="checkbox" class="supply-checkbox" aria-label="Glossy Accents" /><span data-id="373" class="item-label">Glossy Accents</span></label>
+                        <label data-id="374" class="supply-item"><input data-id="375" type="checkbox" class="supply-checkbox" aria-label="Nuvo drops" /><span data-id="376" class="item-label">Nuvo drops</span></label>
+                        <label data-id="377" class="supply-item"><input data-id="378" type="checkbox" class="supply-checkbox" aria-label="Craft knife & self-healing mat" /><span data-id="379" class="item-label">Craft knife &amp; self-healing mat</span></label>
+                        <label data-id="380" class="supply-item"><input data-id="381" type="checkbox" class="supply-checkbox" aria-label="Tweezers" /><span data-id="382" class="item-label">Tweezers</span></label>
+                        <label data-id="383" class="supply-item"><input data-id="384" type="checkbox" class="supply-checkbox" aria-label="Anti-static powder pouch" /><span data-id="385" class="item-label">Anti-static powder pouch</span></label>
+                        <label data-id="386" class="supply-item"><input data-id="387" type="checkbox" class="supply-checkbox" aria-label="Misti stamp tool or stamp positioner" /><span data-id="388" class="item-label">Misti stamp tool or stamp positioner</span></label>
+                        <label data-id="389" class="supply-item"><input data-id="390" type="checkbox" class="supply-checkbox" aria-label="Brayer (roller)" /><span data-id="391" class="item-label">Brayer (roller)</span></label>
+                        <label data-id="392" class="supply-item"><input data-id="393" type="checkbox" class="supply-checkbox" aria-label="Acrylic block set" /><span data-id="394" class="item-label">Acrylic block set</span></label>
+                        <label data-id="395" class="supply-item"><input data-id="396" type="checkbox" class="supply-checkbox" aria-label="Waterbrush pens" /><span data-id="397" class="item-label">Waterbrush pens</span></label>
+                        <label data-id="398" class="supply-item"><input data-id="399" type="checkbox" class="supply-checkbox" aria-label="Palette/craft mat" /><span data-id="400" class="item-label">Palette/craft mat</span></label>
+                        <label data-id="401" class="supply-item"><input data-id="402" type="checkbox" class="supply-checkbox" aria-label="Small scissors" /><span data-id="403" class="item-label">Small scissors</span></label>
+                        <label data-id="404" class="supply-item"><input data-id="405" type="checkbox" class="supply-checkbox" aria-label="Micro scissors" /><span data-id="406" class="item-label">Micro scissors</span></label>
+                        <label data-id="407" class="supply-item"><input data-id="408" type="checkbox" class="supply-checkbox" aria-label="Score tool" /><span data-id="409" class="item-label">Score tool</span></label>
+                    </div>
+                    <div data-id="410" style="margin-top: 10px;">
+                        <button data-id="411" class="notes-toggle-btn no-print" data-section="adhesives">📝 Add Notes</button>
+                        <div data-id="412" class="notes-wrap hidden" data-notes="adhesives">
+                            <textarea data-id="413" class="notes-area" placeholder="Notes about your adhesives & tools..." aria-label="Notes for Adhesives section"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- SECTION 8: Storage & Organization -->
+            <article data-id="414" class="section-box supply-section" data-section="storage">
+                <div data-id="415" class="section-header">
+                    <span data-id="416" class="section-title">🗂️ Storage &amp; Organization</span>
+                    <button data-id="417" class="check-all-btn no-print" data-section="storage">Check All</button>
+                </div>
+                <div data-id="418" class="section-body">
+                    <div data-id="419" class="section-meta">
+                        <span data-id="420" class="section-count"></span>
+                        <div data-id="421" class="section-progress-track"><div data-id="422" class="section-progress-fill" style="width:0%"></div></div>
+                    </div>
+                    <div data-id="423" class="supply-list">
+                        <label data-id="424" class="supply-item"><input data-id="425" type="checkbox" class="supply-checkbox" aria-label="Stamp storage binders" /><span data-id="426" class="item-label">Stamp storage binders</span></label>
+                        <label data-id="427" class="supply-item"><input data-id="428" type="checkbox" class="supply-checkbox" aria-label="Die storage system (magnetic sheets)" /><span data-id="429" class="item-label">Die storage system (magnetic sheets)</span></label>
+                        <label data-id="430" class="supply-item"><input data-id="431" type="checkbox" class="supply-checkbox" aria-label="Ink pad storage (tower or cube)" /><span data-id="432" class="item-label">Ink pad storage (tower or cube)</span></label>
+                        <label data-id="433" class="supply-item"><input data-id="434" type="checkbox" class="supply-checkbox" aria-label="Cardstock storage (vertical)" /><span data-id="435" class="item-label">Cardstock storage (vertical)</span></label>
+                        <label data-id="436" class="supply-item"><input data-id="437" type="checkbox" class="supply-checkbox" aria-label="Paper organizer (accordion)" /><span data-id="438" class="item-label">Paper organizer (accordion)</span></label>
+                        <label data-id="439" class="supply-item"><input data-id="440" type="checkbox" class="supply-checkbox" aria-label="Project life/card storage box" /><span data-id="441" class="item-label">Project life/card storage box</span></label>
+                        <label data-id="442" class="supply-item"><input data-id="443" type="checkbox" class="supply-checkbox" aria-label="Tote bag or craft caddy" /><span data-id="444" class="item-label">Tote bag or craft caddy</span></label>
+                        <label data-id="445" class="supply-item"><input data-id="446" type="checkbox" class="supply-checkbox" aria-label="Label maker or labels" /><span data-id="447" class="item-label">Label maker or labels</span></label>
+                        <label data-id="448" class="supply-item"><input data-id="449" type="checkbox" class="supply-checkbox" aria-label="Small baggies (for embellishments)" /><span data-id="450" class="item-label">Small baggies (for embellishments)</span></label>
+                        <label data-id="451" class="supply-item"><input data-id="452" type="checkbox" class="supply-checkbox" aria-label="Ribbon spools/winder" /><span data-id="453" class="item-label">Ribbon spools/winder</span></label>
+                        <label data-id="454" class="supply-item"><input data-id="455" type="checkbox" class="supply-checkbox" aria-label="Drawer unit (Ikea Alex or similar)" /><span data-id="456" class="item-label">Drawer unit (Ikea Alex or similar)</span></label>
+                    </div>
+                    <div data-id="457" style="margin-top: 10px;">
+                        <button data-id="458" class="notes-toggle-btn no-print" data-section="storage">📝 Add Notes</button>
+                        <div data-id="459" class="notes-wrap hidden" data-notes="storage">
+                            <textarea data-id="460" class="notes-area" placeholder="Notes about your storage & organization..." aria-label="Notes for Storage section"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </div><!-- end grid -->
+
+    </main>
+
+    <!-- Sticky Button Group -->
+    <div data-id="461" class="sticky-btn-group no-print">
+        <button data-id="462" class="action-btn download" id="download-btn-gc01" aria-label="Download this page">
+            ⬇️ Download Page
+        </button>
+        <button data-id="463" class="action-btn" id="print-btn-gc01" aria-label="Print this page">
+            🖨️ Print This Page
+        </button>
+    </div>
+
+    <!-- Back to Top -->
+    <a data-id="464" href="#" id="back-to-top-gc01" class="back-to-top no-print" aria-label="Back to top">↑</a>
+
+    <!-- ===== FOOTER ===== -->
+    <footer data-id="465" class="site-footer">
+        <p data-id="466">Made with 💛 by Grandma's Scrappy Corner</p>
+        <p data-id="467" style="margin-top: 4px;">© 2026 Grandma's Scrappy Corner — All rights reserved</p>
+        <p data-id="468" style="margin-top: 4px;">Made by Copilot</p>
+        <a data-id="469" href="#" class="no-print" style="display: inline-block; margin-top: 10px;">↑ Back to Top</a>
+    </footer>
+
+    <script>
+        // ===== STATE MANAGEMENT =====
+        var STORAGE_KEY = 'grandmas-scrappy-corner-supplies';
+        var NOTES_KEY = 'grandmas-scrappy-corner-notes';
+
+        function getState() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; }
+        }
+        function saveState(state) {
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+        }
+        function getNotes() {
+            try { return JSON.parse(localStorage.getItem(NOTES_KEY)) || {}; } catch(e) { return {}; }
+        }
+        function saveNotes(notes) {
+            try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch(e) {}
+        }
+        function getItemKey(section, index) {
+            return section + '-' + index;
+        }
+
+        // ===== INITIALIZATION =====
+        var sections = document.querySelectorAll('.supply-section');
+        var state = getState();
+        var notesState = getNotes();
+
+        sections.forEach(function(section) {
+            var sectionName = section.dataset.section;
+            var checkboxes = section.querySelectorAll('.supply-checkbox');
+            var notesArea = section.querySelector('.notes-area');
+
+            checkboxes.forEach(function(cb, idx) {
+                var key = getItemKey(sectionName, idx);
+                if (state[key]) {
+                    cb.checked = true;
+                    cb.closest('.supply-item').classList.add('checked');
+                }
+            });
+
+            if (notesState[sectionName] && notesArea) {
+                notesArea.value = notesState[sectionName];
+            }
+
+            updateSectionCount(section);
+        });
+
+        updateTotalProgress();
+
+        // ===== CHECKBOX EVENTS =====
+        document.querySelectorAll('.supply-checkbox').forEach(function(cb) {
+            cb.addEventListener('change', function() {
+                var item = cb.closest('.supply-item');
+                var section = cb.closest('.supply-section');
+                var sectionName = section.dataset.section;
+                var checkboxes = Array.from(section.querySelectorAll('.supply-checkbox'));
+                var idx = checkboxes.indexOf(cb);
+                var key = getItemKey(sectionName, idx);
+                var st = getState();
+
+                if (cb.checked) {
+                    item.classList.add('checked');
+                    st[key] = true;
+                } else {
+                    item.classList.remove('checked');
+                    delete st[key];
+                }
+                saveState(st);
+                updateSectionCount(section);
+                updateTotalProgress();
+                updateCheckAllBtn(section);
+            });
+        });
+
+        // ===== SECTION COUNT & PROGRESS =====
+        function updateSectionCount(section) {
+            var checkboxes = section.querySelectorAll('.supply-checkbox');
+            var checked = section.querySelectorAll('.supply-checkbox:checked').length;
+            var total = checkboxes.length;
+            var countEl = section.querySelector('.section-count');
+            var progressEl = section.querySelector('.section-progress-fill');
+
+            if (countEl) countEl.textContent = checked + ' of ' + total + ' stocked';
+            if (progressEl) progressEl.style.width = (total > 0 ? (checked / total * 100) : 0) + '%';
+        }
+
+        function updateTotalProgress() {
+            var allCb = document.querySelectorAll('.supply-checkbox');
+            var allChecked = document.querySelectorAll('.supply-checkbox:checked').length;
+            var total = allCb.length;
+            var totalEl = document.getElementById('total-progress-gc01');
+            var totalBar = document.getElementById('total-progress-bar-gc01');
+
+            if (totalEl) totalEl.textContent = '🌿 Overall: ' + allChecked + ' of ' + total + ' supplies stocked';
+            if (totalBar) totalBar.style.width = (total > 0 ? (allChecked / total * 100) : 0) + '%';
+        }
+
+        // ===== CHECK ALL / UNCHECK ALL =====
+        document.querySelectorAll('.check-all-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var sectionName = btn.dataset.section;
+                var section = document.querySelector('.supply-section[data-section="' + sectionName + '"]');
+                var checkboxes = section.querySelectorAll('.supply-checkbox');
+                var allChecked = section.querySelectorAll('.supply-checkbox:checked').length === checkboxes.length;
+                var st = getState();
+
+                checkboxes.forEach(function(cb, idx) {
+                    var key = getItemKey(sectionName, idx);
+                    if (allChecked) {
+                        cb.checked = false;
+                        cb.closest('.supply-item').classList.remove('checked');
+                        delete st[key];
+                    } else {
+                        cb.checked = true;
+                        cb.closest('.supply-item').classList.add('checked');
+                        st[key] = true;
+                    }
+                });
+
+                saveState(st);
+                updateSectionCount(section);
+                updateTotalProgress();
+                updateCheckAllBtn(section);
+            });
+        });
+
+        function updateCheckAllBtn(section) {
+            var sectionName = section.dataset.section;
+            var btn = section.querySelector('.check-all-btn');
+            if (!btn) return;
+            var checkboxes = section.querySelectorAll('.supply-checkbox');
+            var allChecked = section.querySelectorAll('.supply-checkbox:checked').length === checkboxes.length;
+            btn.textContent = allChecked ? 'Uncheck All' : 'Check All';
+        }
+
+        sections.forEach(function(section) { updateCheckAllBtn(section); });
+
+        // ===== TOGGLE NOTES =====
+        document.querySelectorAll('.notes-toggle-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var sectionName = btn.dataset.section;
+                var wrap = document.querySelector('[data-notes="' + sectionName + '"]');
+                if (wrap) {
+                    var isHidden = wrap.classList.contains('hidden');
+                    wrap.classList.toggle('hidden');
+                    btn.textContent = isHidden ? '📝 Hide Notes' : '📝 Add Notes';
+                    if (isHidden) {
+                        wrap.querySelector('.notes-area').focus();
+                    }
+                }
+            });
+        });
+
+        // ===== SAVE NOTES =====
+        document.querySelectorAll('.notes-area').forEach(function(area) {
+            area.addEventListener('input', function() {
+                var sectionName = area.closest('[data-notes]').dataset.notes;
+                var notes = getNotes();
+                notes[sectionName] = area.value;
+                saveNotes(notes);
+            });
+        });
+
+        // ===== RESET ALL =====
+        document.getElementById('reset-all-gc01').addEventListener('click', function() {
+            if (!confirm('Are you sure you want to uncheck all supplies and clear all notes? This cannot be undone.')) return;
+
+            document.querySelectorAll('.supply-checkbox').forEach(function(cb) {
+                cb.checked = false;
+                cb.closest('.supply-item').classList.remove('checked');
+            });
+            document.querySelectorAll('.notes-area').forEach(function(area) {
+                area.value = '';
+            });
+
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem(NOTES_KEY);
+            } catch(e) {}
+
+            sections.forEach(function(section) {
+                updateSectionCount(section);
+                updateCheckAllBtn(section);
+            });
+            updateTotalProgress();
+        });
+
+        // ===== PRINT =====
+        document.getElementById('print-btn-gc01').addEventListener('click', function() {
+            document.querySelectorAll('.notes-wrap').forEach(function(w) { w.classList.remove('hidden'); });
+            window.print();
+        });
+
+        // ===== DOWNLOAD PAGE =====
+        document.getElementById('download-btn-gc01').addEventListener('click', function() {
+            var htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+            var blob = new Blob([htmlContent], { type: 'text/html' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'card-supply-organizer.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // ===== MOBILE MENU =====
+        var mobileMenuBtn = document.getElementById('mobile-menu-btn-gc01');
+        var mobileMenu = document.getElementById('mobile-menu-gc01');
+        var mobileMenuClose = document.getElementById('mobile-menu-close-gc01');
+
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+        if (mobileMenuClose && mobileMenu) {
+            mobileMenuClose.addEventListener('click', function() {
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        }
+        if (mobileMenu) {
+            mobileMenu.querySelectorAll('a').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('open');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+
+        // ===== BACK TO TOP =====
+        var backToTop = document.getElementById('back-to-top-gc01');
+        if (backToTop) {
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 400) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
