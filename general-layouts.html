@@ -1,111 +1,189 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J9V3H1G0DG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-J9V3H1G0DG');
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>General Layouts</title>
+    <title>Scrapbooking Grandma Memories</title>
+    <link rel="stylesheet" href="css/style.css">
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #e9f7f3;
-            margin: 0;
+        .memory-entry {
+            margin-bottom: 45px;
             padding: 20px;
+            background: #fffbea;
+            border-radius: 10px;
+            box-shadow: 0 0 6px rgba(0,0,0,0.15);
         }
 
-        header {
-            background: #2a9d8f;
-            color: white;
-            padding: 25px;
-            text-align: center;
-            font-size: 32px;
-            font-weight: bold;
+        .memory-entry img.thumbnail {
+            width: 260px;
+            border-radius: 10px;
+            box-shadow: 0 0 6px rgba(0,0,0,0.25);
         }
 
-        section {
-            margin: 30px auto;
-            max-width: 900px;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            margin-top: 0;
-            font-size: 26px;
-        }
-
-        .pdf-link a {
+        .memory-buttons a {
             display: inline-block;
-            padding: 12px 18px;
-            background: #2a9d8f;
-            color: white;
+            margin-right: 10px;
+            margin-top: 10px;
+            padding: 10px 16px;
+            background: #ffd84d;
+            border-radius: 6px;
             text-decoration: none;
-            border-radius: 8px;
             font-weight: bold;
-            margin: 10px 0;
+            color: #333;
+            box-shadow: 0 0 4px rgba(0,0,0,0.2);
         }
 
-        img {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 10px;
-            margin: 10px 0;
+        .memory-buttons a:hover {
+            background: #ffcc00;
         }
 
-        iframe {
-            width: 100%;
-            max-width: 560px;
-            height: 315px;
-            border: none;
-            border-radius: 10px;
-            margin: 10px 0;
+        .memory-description {
+            max-width: 700px;
+            margin-top: 15px;
+            line-height: 1.6;
         }
     </style>
 </head>
 
 <body>
+<div class="page-container">
 
-<header>General Layouts</header>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>Scrapbooking With Grandma</h2>
 
-<section>
-    <h2>Documents</h2>
-    <p class="pdf-link"><a href="pdfs/general-example.pdf">Download Example Document</a></p>
-</section>
+        <h3>Sections</h3>
+        <a href="index.html">Home</a>
+        <a href="documents.html">Documents & Printables</a>
+        <a href="general-layouts.html" class="active">Scrapbooking Grandma Memories</a>
+        <a href="one-cut.html">One-Cut Projects</a>
+        <a href="worksheets.html">Worksheets</a>
+        <a href="my-layouts.html">My Layouts</a>
+        <a href="card-supply-organizer.html">Card Section</a>
+        <a href="sorting-guide.html">Sorting Guide</a>
 
-<section>
-    <h2>Sketches</h2>
-    <img src="images/general-sketch-example.jpg" alt="General Layout Sketch Example">
-</section>
+        <h3>Holiday</h3>
+        <a href="christmas-checklist.html">Christmas Checklist</a>
+        <a href="christmas-cards.html">Christmas Cards</a>
+        <a href="christmas-embellishments.html">Christmas Embellishments</a>
+    </div>
 
-<section>
-    <h2>Layout Photos</h2>
-    <img src="images/general-layout-example.jpg" alt="General Layout Example">
-</section>
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
 
-<section>
-    <h2>Videos</h2>
-    <iframe src="https://www.youtube.com/embed/YOURVIDEOID" allowfullscreen></iframe>
-</section>
+        <h1 class="page-title section-yellow">Scrapbooking Grandma Memories</h1>
+        <p class="intro-text">
+            A collection of scrapbook layouts created from Grandma’s favorite memories — newest videos at the top.
+        </p>
 
-<footer style="
-    margin-top:40px;
-    padding:20px;
-    background:#f7c600;
-    text-align:center;
-    font-size:1.2rem;
-    font-weight:bold;
-    border-radius:10px;
-">
-    📤 Share My Site: 
-    <a href="https://tinyurl.com/ycyzd5dz" 
-       style="color:black; text-decoration:none;">
-       https://tinyurl.com/ycyzd5dz
-    </a>
-</footer>
+        <!-- ⭐ NEWEST FIRST ⭐ -->
 
+        <!-- Shaving Cream Battle -->
+        <div class="memory-entry">
+            <h2>Shaving Cream Battle! | Amelia’s Funny Memory with Dad</h2>
+            <img src="images/shavingcreamthumb.jpg" class="thumbnail" alt="Shaving Cream Layout Thumbnail">
+
+            <div class="memory-description">
+                Amelia chose the memory — and Grandma created the layout! ❤️💙  
+                Inspired by the red and blue shaving cream colors, this playful page is filled with stars, fun embellishments, and lots of storytelling details.
+            </div>
+
+            <div class="memory-buttons">
+                <a href="https://youtu.be/zzzr11Hstcc" target="_blank">🎥 Watch Video</a>
+                <a href="https://design.cricut.com/landing/project-detail/6a7b5a511d149a20f4ced7e8" target="_blank">🖨 Cricut Project</a>
+                <a href="images/shavingcreamsketch.png" target="_blank">📐 View Sketch</a>
+            </div>
+        </div>
+
+        <!-- His Favorite Toy -->
+        <div class="memory-entry">
+            <h2>His Favorite Toy ❤️ | Paul at 2½ Years Old</h2>
+            <img src="images/favoritetoythumb.jpg" class="thumbnail" alt="Favorite Toy Layout Thumbnail">
+
+            <div class="memory-description">
+                A sweet memory of Paul and his favorite farm toy — preserved with a full farm scene including barn, tractor, animals, and storytelling details.
+            </div>
+
+            <div class="memory-buttons">
+                <a href="https://youtu.be/gHTGf9Ne4tw" target="_blank">🎥 Watch Video</a>
+                <a href="images/favoritetoysketch.jpg" target="_blank">📐 View Sketch</a>
+            </div>
+        </div>
+
+        <!-- Little Cowgirl -->
+        <div class="memory-entry">
+            <h2>Little Cowgirl, Big Memories 🤠 | 12x12 Scrapbook Layout</h2>
+            <img src="images/cowgirlthumb.jpg" class="thumbnail" alt="Cowgirl Layout Thumbnail">
+
+            <div class="memory-description">
+                A Western-themed layout with cowboy boots, rope, horseshoes, cactus, and soft pinks to keep the page playful and sweet.
+            </div>
+
+            <div class="memory-buttons">
+                <a href="https://youtu.be/mXxWlrHHoEU" target="_blank">🎥 Watch Video</a>
+                <a href="https://design.cricut.com/landing/project-detail/6a8a09d1a713a7d59163594f" target="_blank">🖨 Cricut Project</a>
+                <a href="images/lillisketch.jpg" target="_blank">📐 View Sketch</a>
+            </div>
+        </div>
+
+        <!-- Girl & Her Cat -->
+        <div class="memory-entry">
+            <h2>Scrapbooking a Girl & Her Cat | Lorelei & Hickory</h2>
+            <img src="images/loreleihickorythumb.jpg" class="thumbnail" alt="Lorelei Hickory Layout Thumbnail">
+
+            <div class="memory-description">
+                A colorful window-scene layout celebrating the sweet bond between Lorelei and her kitty Hickory.
+            </div>
+
+            <div class="memory-buttons">
+                <a href="https://youtu.be/FSWnnBv_eb0" target="_blank">🎥 Watch Video</a>
+                <a href="https://design.cricut.com/landing/project-detail/6a8f571f06112fab46367c99" target="_blank">🖨 Cricut Project</a>
+                <a href="images/loreleihickorysketch.jpg" target="_blank">📐 View Sketch</a>
+            </div>
+        </div>
+
+        <!-- Sweet as Honey -->
+        <div class="memory-entry">
+            <h2>Sweet as Honey 💜 | Baby Layout</h2>
+            <img src="images/loreleigarden.jpg" class="thumbnail" alt="Sweet as Honey Thumbnail">
+
+            <div class="memory-description">
+                A soft and sweet baby layout using purples, blues, and greens — finished with a perfect “Sweet as Honey” border.
+            </div>
+
+            <div class="memory-buttons">
+                <a href="https://youtu.be/WrFdLLRvL5I" target="_blank">🎥 Watch Video</a>
+                <a href="images/loreleigardensketch.jpg" target="_blank">📐 View Sketch</a>
+            </div>
+        </div>
+
+        <!-- Summer Adventures -->
+        <div class="memory-entry">
+            <h2>Summer Adventures 🚲🌸 | Fun 12x12 Scrapbook Layout</h2>
+            <img src="images/letsridethumb.jpg" class="thumbnail" alt="Summer Adventures Thumbnail">
+
+            <div class="memory-description">
+                A bright and cheerful summer bike‑riding layout using orange, turquoise, and yellow papers with flowers, hearts, and sunshine.
+            </div>
+
+            <div class="memory-buttons">
+                <a href="https://youtu.be/9zKr-g2bM4M" target="_blank">🎥 Watch Video</a>
+                <a href="https://design.cricut.com/landing/project-detail/6a89f737922c4d67460aea8c" target="_blank">🖨 Cricut Project</a>
+                <a href="images/letsridesketch.jpg" target="_blank">📐 View Sketch</a>
+            </div>
+        </div>
+
+    </div> <!-- end main-content -->
+</div> <!-- end page-container -->
 </body>
 </html>
-
